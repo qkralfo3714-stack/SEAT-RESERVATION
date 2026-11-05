@@ -36,17 +36,23 @@
     h1 {
         font-weight: 700;
         font-size: 32px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         letter-spacing: 2px;
     }
-    h2 {
-        font-weight: 500;
-        font-size: 22px;
-        color: #aeb5d1 !important;
-        margin-top: 0;
-        margin-bottom: 40px;
-        letter-spacing: 1px;
+
+    /* 블록 제목 스타일 */
+    .block-title {
+        font-weight: 700;
+        font-size: 24px;
+        color: #d4af37;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #d4af37;
+        padding-bottom: 10px;
+        width: 80%;
+        text-align: center;
     }
+
     .row {
         display: flex;
         align-items: center;
@@ -81,6 +87,7 @@
         font-size: 14px;
         box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
     }
+
     .seat span {
         font-size: 11px;
         font-weight: 500;
@@ -92,8 +99,42 @@
 <body>
 
     <h1>제13회 학생 오케스트라 정기 연주회 좌석 배치</h1>
-    <h2>1층 B블록입니다.</h2>
+    
+    <!-- O블록 영역 -->
+    <div class="block-title">1층 O블록</div>
+    <div class="row">
+        <div class="row-label">4열</div>
+        <div class="seat-group">
+            <!-- 10번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 11번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 12번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 13번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 14번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 15번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 16번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 17번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 18번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 19번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 20번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+            <!-- 21번 -->
+            <div class="seat"><span>0학년</span>홍길동</div>
+        </div>
+    </div>
 
+    <!-- B블록 영역 -->
+    <div class="block-title">1층 B블록</div>
+    
     <!-- 1열 -->
     <div class="row">
         <div class="row-label">1열</div>
