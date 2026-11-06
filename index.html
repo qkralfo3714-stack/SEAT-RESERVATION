@@ -74,6 +74,7 @@
         width: 40px;
     }
     .seat {
+        position: relative; /* 좌석 번호 배치를 위해 추가 */
         background: linear-gradient(135deg, #d4af37, #a6841e) !important;
         color: #0b132b !important;
         width: 60px;
@@ -87,6 +88,28 @@
         font-size: 14px;
         box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
     }
+    
+    /* 빈 좌석 스타일 */
+    .seat.empty {
+        background: transparent !important;
+        border: 2px solid #d4af37;
+        color: #d4af37 !important;
+        box-shadow: none;
+    }
+
+    /* 좌석 번호 스타일 */
+    .seat-number {
+        position: absolute;
+        top: 4px;
+        left: 5px;
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(11, 19, 43, 0.5);
+    }
+    
+    .seat.empty .seat-number {
+        color: rgba(212, 175, 55, 0.8);
+    }
 
     .seat span {
         font-size: 11px;
@@ -94,41 +117,121 @@
         margin-bottom: 3px;
         opacity: 0.8;
     }
+    
+    /* QR 코드 및 모달 스타일 */
+    .qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 40px;
+        cursor: pointer;
+        background: rgba(255,255,255,0.05);
+        padding: 15px 30px;
+        border-radius: 12px;
+        border: 1px dashed #d4af37;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .qr-container:hover {
+        transform: translateY(-5px);
+        background: rgba(255,255,255,0.1);
+    }
+    .qr-title {
+        color: #d4af37;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    .qr-small {
+        width: 120px;
+        height: 120px;
+        border: 5px solid white;
+        border-radius: 8px;
+    }
+    .qr-desc {
+        color: #aeb5d1;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+    
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(11, 19, 43, 0.95);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        backdrop-filter: blur(5px); /* 배경 흐림 효과 */
+    }
+    .modal-content {
+        background-color: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        max-width: 90%;
+    }
+    .modal-title {
+        color: #0b132b;
+        font-size: 28px;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 25px;
+    }
+    .qr-large {
+        width: 300px;
+        height: 300px;
+        max-width: 100%;
+    }
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        color: #0b132b;
+        font-size: 32px;
+        font-weight: 300;
+        cursor: pointer;
+        opacity: 0.6;
+    }
+    .close-btn:hover {
+        opacity: 1;
+    }
 </style>
 </head>
 <body>
 
     <h1>제13회 학생 오케스트라 정기 연주회 좌석 배치</h1>
     
+    <!-- QR 코드 안내 영역 -->
+    <div class="qr-container" onclick="openQrModal()">
+        <div class="qr-title">내 좌석 확인하기</div>
+        <!-- API를 통해 동적으로 생성된 QR 코드 (작은 사이즈) -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbxTFij1FbtXehnsLlHXhGBTUZ8vB0ePPSrdujED4MGK-oh5IuTU6XPARMYdeXWSKImZzw%2Fexec" alt="좌석 확인 QR" class="qr-small">
+        <div class="qr-desc">QR을 터치하면 크게 보입니다 👆</div>
+    </div>
+
     <!-- O블록 영역 -->
     <div class="block-title">1층 O블록</div>
     <div class="row">
         <div class="row-label">4열</div>
         <div class="seat-group">
-            <!-- 10번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
-            <!-- 11번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
-            <!-- 12번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
-            <!-- 13번 -->
-            <div class="seat"><span>교사</span>신지</div>
-            <!-- 14번 -->
-            <div class="seat"><span>교사</span>신지</div>
-            <!-- 15번 -->
-            <div class="seat"><span>교사</span>신지</div>
-            <!-- 16번 -->
-            <div class="seat"><span>교사</span>김예슬</div>
-            <!-- 17번 -->
-            <div class="seat"><span>교사</span>김예슬</div>
-            <!-- 18번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
-            <!-- 19번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
-            <!-- 20번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
-            <!-- 21번 -->
-            <div class="seat"><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">10</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">11</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">12</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">13</div><span>내빈</span>신지T</div>
+            <div class="seat"><div class="seat-number">14</div><span>내빈</span>신지T</div>
+            <div class="seat"><div class="seat-number">15</div><span>내빈</span>신지T</div>
+            <div class="seat"><div class="seat-number">16</div><span>내빈</span>예슬T</div>
+            <div class="seat"><div class="seat-number">17</div><span>내빈</span>예슬T</div>
+            <div class="seat"><div class="seat-number">18</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">19</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">20</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">21</div><span>0학년</span>홍길동</div>
         </div>
     </div>
 
@@ -139,26 +242,26 @@
     <div class="row">
         <div class="row-label">1열</div>
         <div class="seat-group">
-            <div class="seat"><span>3학년</span>황정후</div>
-            <div class="seat"><span>3학년</span>황정후</div>
-            <div class="seat"><span>2학년</span>정라희</div>
-            <div class="seat"><span>2학년</span>정라희</div>
-            <div class="seat"><span>1학년</span>정예원</div>
-            <div class="seat"><span>1학년</span>정예원</div>
-            <div class="seat"><span>1학년</span>배정우</div>
-            <div class="seat"><span>1학년</span>배정우</div>
+            <div class="seat"><div class="seat-number">1</div><span>3학년</span>황정후</div>
+            <div class="seat"><div class="seat-number">2</div><span>3학년</span>황정후</div>
+            <div class="seat"><div class="seat-number">3</div><span>2학년</span>정라희</div>
+            <div class="seat"><div class="seat-number">4</div><span>2학년</span>정라희</div>
+            <div class="seat"><div class="seat-number">5</div><span>1학년</span>정예원</div>
+            <div class="seat"><div class="seat-number">6</div><span>1학년</span>정예원</div>
+            <div class="seat"><div class="seat-number">7</div><span>1학년</span>배정우</div>
+            <div class="seat"><div class="seat-number">8</div><span>1학년</span>배정우</div>
         </div>
         <div class="aisle"></div>
         <div class="seat-group">
-            <div class="seat"><span>3학년</span>염상원</div>
-            <div class="seat"><span>3학년</span>염상원</div>
-            <div class="seat"><span>1학년</span>최소윤</div>
-            <div class="seat"><span>1학년</span>최소윤</div>
-            <div class="seat"><span>2학년</span>하준상</div>
-            <div class="seat"><span>2학년</span>하준상</div>
-            <div class="seat"><span>2학년</span>이성윤</div>
-            <div class="seat"><span>3학년</span>김희성</div>
-            <div class="seat"><span>3학년</span>김희성</div>
+            <div class="seat"><div class="seat-number">9</div><span>3학년</span>염상원</div>
+            <div class="seat"><div class="seat-number">10</div><span>3학년</span>염상원</div>
+            <div class="seat"><div class="seat-number">11</div><span>1학년</span>최소윤</div>
+            <div class="seat"><div class="seat-number">12</div><span>1학년</span>최소윤</div>
+            <div class="seat"><div class="seat-number">13</div><span>2학년</span>하준상</div>
+            <div class="seat"><div class="seat-number">14</div><span>2학년</span>하준상</div>
+            <div class="seat"><div class="seat-number">15</div><span>2학년</span>이성윤</div>
+            <div class="seat"><div class="seat-number">16</div><span>3학년</span>김희성</div>
+            <div class="seat"><div class="seat-number">17</div><span>3학년</span>김희성</div>
         </div>
     </div>
 
@@ -166,26 +269,26 @@
     <div class="row">
         <div class="row-label">2열</div>
         <div class="seat-group">
-            <div class="seat"><span>3학년</span>윤준호</div>
-            <div class="seat"><span>3학년</span>윤준호</div>
-            <div class="seat"><span>3학년</span>노재준</div>
-            <div class="seat"><span>2학년</span>최완</div>
-            <div class="seat"><span>2학년</span>최완</div>
-            <div class="seat"><span>3학년</span>최지연</div>
-            <div class="seat"><span>2학년</span>강수진</div>
-            <div class="seat"><span>2학년</span>강수진</div>
+            <div class="seat"><div class="seat-number">1</div><span>3학년</span>윤준호</div>
+            <div class="seat"><div class="seat-number">2</div><span>3학년</span>윤준호</div>
+            <div class="seat"><div class="seat-number">3</div><span>3학년</span>노재준</div>
+            <div class="seat"><div class="seat-number">4</div><span>2학년</span>최완</div>
+            <div class="seat"><div class="seat-number">5</div><span>2학년</span>최완</div>
+            <div class="seat"><div class="seat-number">6</div><span>3학년</span>최지연</div>
+            <div class="seat"><div class="seat-number">7</div><span>2학년</span>강수진</div>
+            <div class="seat"><div class="seat-number">8</div><span>2학년</span>강수진</div>
         </div>
         <div class="aisle"></div>
         <div class="seat-group">
-            <div class="seat"><span>2학년</span>이도율</div>
-            <div class="seat"><span>2학년</span>이도율</div>
-            <div class="seat"><span>2학년</span>문건혁</div>
-            <div class="seat"><span>2학년</span>문건혁</div>
-            <div class="seat"><span>2학년</span>김수환</div>
-            <div class="seat"><span>2학년</span>김수환</div>
-            <div class="seat"><span>2학년</span>김나원</div>
-            <div class="seat"><span>2학년</span>김나원</div>
-            <div class="seat"><span>2학년</span>이성윤</div>
+            <div class="seat"><div class="seat-number">9</div><span>2학년</span>이도율</div>
+            <div class="seat"><div class="seat-number">10</div><span>2학년</span>이도율</div>
+            <div class="seat"><div class="seat-number">11</div><span>2학년</span>문건혁</div>
+            <div class="seat"><div class="seat-number">12</div><span>2학년</span>문건혁</div>
+            <div class="seat"><div class="seat-number">13</div><span>2학년</span>김수환</div>
+            <div class="seat"><div class="seat-number">14</div><span>2학년</span>김수환</div>
+            <div class="seat"><div class="seat-number">15</div><span>2학년</span>김나원</div>
+            <div class="seat"><div class="seat-number">16</div><span>2학년</span>김나원</div>
+            <div class="seat"><div class="seat-number">17</div><span>2학년</span>이성윤</div>
         </div>
     </div>
 
@@ -193,26 +296,26 @@
     <div class="row">
         <div class="row-label">3열</div>
         <div class="seat-group">
-            <div class="seat"><span>3학년</span>조재현</div>
-            <div class="seat"><span>3학년</span>김민지</div>
-            <div class="seat"><span>3학년</span>허나빈</div>
-            <div class="seat"><span>3학년</span>허나빈</div>
-            <div class="seat"><span>1학년</span>박준수</div>
-            <div class="seat"><span>1학년</span>박준수</div>
-            <div class="seat"><span>2학년</span>양하영</div>
-            <div class="seat"><span>2학년</span>양하영</div>
+            <div class="seat"><div class="seat-number">1</div><span>3학년</span>조재현</div>
+            <div class="seat"><div class="seat-number">2</div><span>3학년</span>김민지</div>
+            <div class="seat"><div class="seat-number">3</div><span>3학년</span>허나빈</div>
+            <div class="seat"><div class="seat-number">4</div><span>3학년</span>허나빈</div>
+            <div class="seat"><div class="seat-number">5</div><span>1학년</span>박준수</div>
+            <div class="seat"><div class="seat-number">6</div><span>1학년</span>박준수</div>
+            <div class="seat"><div class="seat-number">7</div><span>2학년</span>양하영</div>
+            <div class="seat"><div class="seat-number">8</div><span>2학년</span>양하영</div>
         </div>
         <div class="aisle"></div>
         <div class="seat-group">
-            <div class="seat"><span>1학년</span>이은우</div>
-            <div class="seat"><span>1학년</span>이은우</div>
-            <div class="seat"><span>3학년</span>이민서</div>
-            <div class="seat"><span>3학년</span>이민서</div>
-            <div class="seat"><span>2학년</span>김수아</div>
-            <div class="seat"><span>2학년</span>김수아</div>
-            <div class="seat"><span>3학년</span>김진서</div>
-            <div class="seat"><span>2학년</span>이유선</div>
-            <div class="seat"><span>2학년</span>이유선</div>
+            <div class="seat"><div class="seat-number">9</div><span>1학년</span>이은우</div>
+            <div class="seat"><div class="seat-number">10</div><span>1학년</span>이은우</div>
+            <div class="seat"><div class="seat-number">11</div><span>3학년</span>이민서</div>
+            <div class="seat"><div class="seat-number">12</div><span>3학년</span>이민서</div>
+            <div class="seat"><div class="seat-number">13</div><span>2학년</span>김수아</div>
+            <div class="seat"><div class="seat-number">14</div><span>2학년</span>김수아</div>
+            <div class="seat"><div class="seat-number">15</div><span>3학년</span>김진서</div>
+            <div class="seat"><div class="seat-number">16</div><span>2학년</span>이유선</div>
+            <div class="seat"><div class="seat-number">17</div><span>2학년</span>이유선</div>
         </div>
     </div>
 
@@ -220,26 +323,26 @@
     <div class="row">
         <div class="row-label">4열</div>
         <div class="seat-group">
-            <div class="seat"><span>2학년</span>장은호</div>
-            <div class="seat"><span>2학년</span>장은호</div>
-            <div class="seat"><span>1학년</span>손윤찬</div>
-            <div class="seat"><span>1학년</span>손윤찬</div>
-            <div class="seat"><span>2학년</span>장선혜</div>
-            <div class="seat"><span>2학년</span>장선혜</div>
-            <div class="seat"><span>1학년</span>김주향</div>
-            <div class="seat"><span>1학년</span>김주향</div>
+            <div class="seat"><div class="seat-number">1</div><span>2학년</span>장은호</div>
+            <div class="seat"><div class="seat-number">2</div><span>2학년</span>장은호</div>
+            <div class="seat"><div class="seat-number">3</div><span>1학년</span>손윤찬</div>
+            <div class="seat"><div class="seat-number">4</div><span>1학년</span>손윤찬</div>
+            <div class="seat"><div class="seat-number">5</div><span>2학년</span>장선혜</div>
+            <div class="seat"><div class="seat-number">6</div><span>2학년</span>장선혜</div>
+            <div class="seat"><div class="seat-number">7</div><span>1학년</span>김주향</div>
+            <div class="seat"><div class="seat-number">8</div><span>1학년</span>김주향</div>
         </div>
         <div class="aisle"></div>
         <div class="seat-group">
-            <div class="seat"><span>3학년</span>오서현</div>
-            <div class="seat"><span>2학년</span>김재이</div>
-            <div class="seat"><span>2학년</span>김재이</div>
-            <div class="seat"><span>1학년</span>음윤진</div>
-            <div class="seat"><span>1학년</span>음윤진</div>
-            <div class="seat"><span>1학년</span>김재언</div>
-            <div class="seat"><span>1학년</span>김재언</div>
-            <div class="seat"><span>3학년</span>김하린</div>
-            <div class="seat"><span>3학년</span>김하린</div>
+            <div class="seat"><div class="seat-number">9</div><span>3학년</span>오서현</div>
+            <div class="seat"><div class="seat-number">10</div><span>2학년</span>김재이</div>
+            <div class="seat"><div class="seat-number">11</div><span>2학년</span>김재이</div>
+            <div class="seat"><div class="seat-number">12</div><span>1학년</span>음윤진</div>
+            <div class="seat"><div class="seat-number">13</div><span>1학년</span>음윤진</div>
+            <div class="seat"><div class="seat-number">14</div><span>1학년</span>김재언</div>
+            <div class="seat"><div class="seat-number">15</div><span>1학년</span>김재언</div>
+            <div class="seat"><div class="seat-number">16</div><span>3학년</span>김하린</div>
+            <div class="seat"><div class="seat-number">17</div><span>3학년</span>김하린</div>
         </div>
     </div>
 
@@ -247,26 +350,26 @@
     <div class="row">
         <div class="row-label">5열</div>
         <div class="seat-group">
-            <div class="seat"><span>2학년</span>강아민</div>
-            <div class="seat"><span>2학년</span>강아민</div>
-            <div class="seat"><span>1학년</span>선예희</div>
-            <div class="seat"><span>1학년</span>선예희</div>
-            <div class="seat"><span>1학년</span>정지현</div>
-            <div class="seat"><span>1학년</span>정지현</div>
-            <div class="seat"><span>1학년</span>박정진</div>
-            <div class="seat"><span>1학년</span>박정진</div>
+            <div class="seat"><div class="seat-number">1</div><span>2학년</span>강아민</div>
+            <div class="seat"><div class="seat-number">2</div><span>2학년</span>강아민</div>
+            <div class="seat"><div class="seat-number">3</div><span>1학년</span>선예희</div>
+            <div class="seat"><div class="seat-number">4</div><span>1학년</span>선예희</div>
+            <div class="seat"><div class="seat-number">5</div><span>1학년</span>정지현</div>
+            <div class="seat"><div class="seat-number">6</div><span>1학년</span>정지현</div>
+            <div class="seat"><div class="seat-number">7</div><span>1학년</span>박정진</div>
+            <div class="seat"><div class="seat-number">8</div><span>1학년</span>박정진</div>
         </div>
         <div class="aisle"></div>
         <div class="seat-group">
-            <div class="seat"><span>1학년</span>서인석</div>
-            <div class="seat"><span>1학년</span>서인석</div>
-            <div class="seat"><span>2학년</span>윤서원</div>
-            <div class="seat"><span>2학년</span>윤서원</div>
-            <div class="seat"><span>1학년</span>한지훤</div>
-            <div class="seat"><span>1학년</span>한지훤</div>
-            <div class="seat"><span>2학년</span>윤영율</div>
-            <div class="seat"><span>3학년</span>송시후</div>
-            <div class="seat"><span>3학년</span>송시후</div>
+            <div class="seat"><div class="seat-number">9</div><span>1학년</span>서인석</div>
+            <div class="seat"><div class="seat-number">10</div><span>1학년</span>서인석</div>
+            <div class="seat"><div class="seat-number">11</div><span>2학년</span>윤서원</div>
+            <div class="seat"><div class="seat-number">12</div><span>2학년</span>윤서원</div>
+            <div class="seat"><div class="seat-number">13</div><span>1학년</span>한지훤</div>
+            <div class="seat"><div class="seat-number">14</div><span>1학년</span>한지훤</div>
+            <div class="seat"><div class="seat-number">15</div><span>2학년</span>윤영율</div>
+            <div class="seat"><div class="seat-number">16</div><span>3학년</span>송시후</div>
+            <div class="seat"><div class="seat-number">17</div><span>3학년</span>송시후</div>
         </div>
     </div>
 
@@ -274,28 +377,74 @@
     <div class="row">
         <div class="row-label">6열</div>
         <div class="seat-group">
-            <div class="seat"><span>3학년</span>김기영</div>
-            <div class="seat"><span>1학년</span>심태하</div>
-            <div class="seat"><span>1학년</span>심태하</div>
-            <div class="seat"><span>2학년</span>김재연</div>
-            <div class="seat"><span>2학년</span>김재연</div>
-            <div class="seat"><span>2학년</span>김준희</div>
-            <div class="seat"><span>2학년</span>배민경</div>
-            <div class="seat"><span>2학년</span>배민경</div>
+            <div class="seat"><div class="seat-number">1</div><span>3학년</span>김기영</div>
+            <div class="seat"><div class="seat-number">2</div><span>1학년</span>심태하</div>
+            <div class="seat"><div class="seat-number">3</div><span>1학년</span>심태하</div>
+            <div class="seat"><div class="seat-number">4</div><span>2학년</span>김재연</div>
+            <div class="seat"><div class="seat-number">5</div><span>2학년</span>김재연</div>
+            <div class="seat"><div class="seat-number">6</div><span>2학년</span>김준희</div>
+            <div class="seat"><div class="seat-number">7</div><span>2학년</span>배민경</div>
+            <div class="seat"><div class="seat-number">8</div><span>2학년</span>배민경</div>
         </div>
         <div class="aisle"></div>
         <div class="seat-group">
-            <div class="seat"><span>1학년</span>문도경</div>
-            <div class="seat"><span>1학년</span>문도경</div>
-            <div class="seat"><span>2학년</span>김가윤</div>
-            <div class="seat"><span>2학년</span>김가윤</div>
-            <div class="seat"><span>2학년</span>이권우</div>
-            <div class="seat"><span>2학년</span>이권우</div>
-            <div class="seat"><span>2학년</span>윤영율</div>
-            <div class="seat"><span>3학년</span>배지연</div>
-            <div class="seat"><span>3학년</span>배지연</div>
+            <div class="seat"><div class="seat-number">9</div><span>1학년</span>문도경</div>
+            <div class="seat"><div class="seat-number">10</div><span>1학년</span>문도경</div>
+            <div class="seat"><div class="seat-number">11</div><span>2학년</span>김가윤</div>
+            <div class="seat"><div class="seat-number">12</div><span>2학년</span>김가윤</div>
+            <div class="seat"><div class="seat-number">13</div><span>2학년</span>이권우</div>
+            <div class="seat"><div class="seat-number">14</div><span>2학년</span>이권우</div>
+            <div class="seat"><div class="seat-number">15</div><span>2학년</span>윤영율</div>
+            <div class="seat"><div class="seat-number">16</div><span>3학년</span>배지연</div>
+            <div class="seat"><div class="seat-number">17</div><span>3학년</span>배지연</div>
         </div>
     </div>
 
+    <!-- 2층 E블록 영역 -->
+    <div class="block-title">2층 E블록</div>
+    
+    <!-- 6열 -->
+    <div class="row">
+        <div class="row-label">6열</div>
+        <div class="seat-group">
+            <div class="seat"><div class="seat-number">1</div><span>1학년</span>구준모</div>
+            <div class="seat"><div class="seat-number">2</div><span>1학년</span>구준모</div>
+            <div class="seat"><div class="seat-number">3</div><span>1학년</span>구준모</div>
+            <div class="seat"><div class="seat-number">4</div><span>0학년</span>홍길동</div>
+        </div>
+    </div>
+
+    <!-- 7열 -->
+    <div class="row">
+        <div class="row-label">7열</div>
+        <div class="seat-group">
+            <div class="seat"><div class="seat-number">1</div><span>2학년</span>이소윤</div>
+            <div class="seat"><div class="seat-number">2</div><span>2학년</span>이소윤</div>
+            <div class="seat"><div class="seat-number">3</div><span>0학년</span>홍길동</div>
+            <div class="seat"><div class="seat-number">4</div><span>0학년</span>홍길동</div>
+        </div>
+    </div>
+
+    <!-- QR 모달 창 -->
+    <div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation();">
+            <span class="close-btn" onclick="closeQrModal(event)">&times;</span>
+            <h2 class="modal-title">좌석 확인</h2>
+            <!-- 확대된 QR 코드 (큰 사이즈) -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbxTFij1FbtXehnsLlHXhGBTUZ8vB0ePPSrdujED4MGK-oh5IuTU6XPARMYdeXWSKImZzw%2Fexec" alt="확대된 QR" class="qr-large">
+        </div>
+    </div>
+
+    <script>
+        // 모달 열기 함수
+        function openQrModal() {
+            document.getElementById('qrModal').style.display = 'flex';
+        }
+        
+        // 모달 닫기 함수
+        function closeQrModal(event) {
+            document.getElementById('qrModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
